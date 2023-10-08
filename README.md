@@ -27,17 +27,42 @@ Build the image
 ```
 Run the image where 6ea095a128e8 is the image id from the previous command
 ```shell
- docker run -d --rm -p 8080:8080 6ea095a128e8
+ docker run --cpus 1 -d --rm -p 8081:8080 6ea095a128e8
 ```
 Perform test using Apache JMeter or other tool.
 ```shell
-http://localhost:8080/test?value=test
+http://localhost:8081/test?value=test
 ```
-### Results
-I have tested the app using 100, 500 and 1000 users at the same time. The results are in the .csv files.
+### Methodology
+I have tested the app using 100, 500 and 1000 users at the same time. The results are in the .csv files in the analytics directory.
 
-GraalVM variant is significantly faster than JVM, with GraalVM having very stable performance in opposition to JVM.
-Both apps have similar memory footprint, while the startup for GraalVM is 23x faster(17ms vs 401ms).
+In the analytics directory there are 2 python script to analyze data.
+
+comparison.py takes 6 csv files and shows a chart.
+```shell
+python3 comparison.py
+```
+
+singlefile.py takes filename as an argument and prints throughput chart
+```shell
+python3 singlefile.py jvm-100.csv
+```
+
+
+
+### Results
+GraalVM variant is slower than JVM, with GraalVM having very stable performance in opposition to JVM.
+JVM had a memory footprint of around 60MiB while GraalVM took 400MiB. The startup for GraalVM is 23x faster(17ms vs 401ms).
 JVM has much faster compilation time.
 
-![Comparison](https://user-images.githubusercontent.com/10707925/273471862-31a62ecc-5d3b-44d8-894b-efc1cd27c6ce.png)
+Comparison
+![Comparison](https://user-images.githubusercontent.com/10707925/273477949-8390dc2c-2fe5-45f8-84c4-0a3be325034c.png)
+
+JVM 500 users throughput
+![JVM500](https://user-images.githubusercontent.com/10707925/273478109-f846327d-ff78-44fe-b7dc-831f075db306.png)
+
+GraalVM 500 users throughput
+![GraalVM500](https://user-images.githubusercontent.com/10707925/273478110-5fbad0a8-1127-4b14-8a92-515f84f86293.png)
+
+Memory - first container being JVM and second one being GraalVM
+![Memory](https://user-images.githubusercontent.com/10707925/273477951-2f6c9f79-e9b6-4aa8-9205-f951d8113d2c.png)
