@@ -51,6 +51,16 @@ python3 singlefile.py jvm-100.csv
 
 
 ### Results
+| Item | JVM | GraalVM |
+|----------|----------|----------|
+| Throughput 100 users   |  7561  | 8937   |
+| Throughput 500 users  | 24974   | 8145   |
+| Throughput 1000 users   | 19462   | 7346   |
+| Memory   | 407MiB   | 76.82MiB   |
+| Startup time | 401ms | 17 ms |
+| Compilation time | < 1 sec | 70 sec |
+
+
 GraalVM variant is slower than JVM, with GraalVM having very stable performance in opposition to JVM.
 JVM had a memory footprint of around 60MiB while GraalVM took 400MiB. The startup for GraalVM is 23x faster(17ms vs 401ms).
 JVM has much faster compilation time.
